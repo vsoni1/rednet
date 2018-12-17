@@ -1,3 +1,6 @@
+"""
+functions for generating network plot data from reddit conversation
+"""
 import plotly.graph_objs as go
 import networkx as nx
 import praw
@@ -6,6 +9,8 @@ from collections import Counter
 import textwrap
 
 def wrap_wrapper(text):
+    """returns wrapped text, so it doesn't get cut off during hover over
+    """
     textlist = textwrap.wrap(text,width=30)
     wrappedtext = ''
     for item in textlist:
@@ -14,6 +19,19 @@ def wrap_wrapper(text):
     return wrappedtext
 
 def make_comment_net(node):
+    """extract profile of bright region in image
+
+    Parameters
+    ----------
+    node : PRAW Comment object
+
+    Returns
+    -------
+    Graph
+        networkx graph object with nodes as comment ids and attributes include
+        comment body, time, and number of replies
+
+    """
     def get_author(n):
         try:
             return n.author.name
@@ -37,6 +55,22 @@ def make_comment_net(node):
 
 
 def get_net(url):
+    """extract profile of bright region in image
+
+    Parameters
+    ----------
+    url : url of reddit submission
+
+    Returns
+    -------
+    node_trace
+        nodes of network plot
+    edge_trace
+        edges of network plot
+    title
+        submissino title
+
+    """
     reddit_api = np.load('/home/vsoni1/reddit_api.npz')
     reddit = praw.Reddit(client_id=reddit_api['client_id'],
                           client_secret=reddit_api['client_secret'],

@@ -1,3 +1,8 @@
+"""
+code for generating visualization of reddit conversation.
+gets input url from user, and generates network from rednet.
+This code plots it
+"""
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
