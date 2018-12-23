@@ -43,11 +43,19 @@ def make_comment_net(node):
     nodelist = np.append(node,comment_list)
     authors = [get_author(n) for n in nodelist]
     d = Counter(authors)
-    G.add_node(node.id,name=get_author(node),body=node.body,time=node.created_utc,count=d[node.author.name])
+    G.add_node(
+        node.id,name=get_author(node),body=node.body,
+        time=node.created_utc,count=d[node.author.name],
+        score=node.score
+        )
     for item in comment_list:
         local_id = item.id
         nodes.append(item)
-        G.add_node(item.id,name=get_author(item),body=item.body,time=item.created_utc,count=d[get_author(item)])
+        G.add_node(
+            item.id,name=get_author(item),body=item.body,
+            time=item.created_utc,count=d[get_author(item)],
+            score=item.score
+            )
         if item.parent_id[:2] != 't3':
             parent_id = item.parent_id.rsplit('t1_')[1]
             G.add_edge(parent_id, local_id)
@@ -68,7 +76,7 @@ def get_net(url):
     edge_trace
         edges of network plot
     title
-        submissino title
+        submission title
 
     """
     reddit_api = np.load('/home/vsoni1/reddit_api.npz')
@@ -98,7 +106,8 @@ def get_net(url):
                      mode='lines',
                      x=Xe,
                      y=Ye,
-                     line=dict(width=1, color='rgb(25,25,25)'),
+                     line=dict(width=3, color='rgb(250,250,250)'),
+                     opacity=1,
                      hoverinfo='none'
                     )
 
@@ -111,22 +120,23 @@ def get_net(url):
         text=[],
         mode='markers',
         hoverinfo='text',
+        opacity=.7,
         marker=dict(
-            showscale=True,
+            showscale=False,
             colorscale='YlGnBu',
             reversescale=True,
             color=[],
-            size=10,
-            colorbar=dict(
-                thickness=15,
-                title='Node Connections',
-                xanchor='left',
-                titleside='right'
-            ),
+            size=30,
+            # colorbar=dict(
+            #     thickness=35,
+            #     title='Node Connections',
+            #     xanchor='left',
+            #     titleside='right'
+            # ),
             line=dict(width=2)))
 
     for node, adjacencies in enumerate(G.adjacency()):
-        node_trace['marker']['color']+=tuple([len(adjacencies[1])])
+        node_trace['marker']['color']+=tuple([reddit.comment(adjacencies[0]).score])
         node_info =  wrap_wrapper(
             reddit.comment(adjacencies[0]).body
             )
