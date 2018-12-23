@@ -79,7 +79,7 @@ def get_net(url):
         submission title
 
     """
-    reddit_api = np.load('/home/vsoni1/reddit_api.npz')
+    reddit_api = np.load('./reddit_api.npz')
     reddit = praw.Reddit(client_id=reddit_api['client_id'],
                           client_secret=reddit_api['client_secret'],
                           user_agent=reddit_api['user_agent'])
