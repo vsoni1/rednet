@@ -19,7 +19,7 @@ def wrap_wrapper(text):
     return wrappedtext
 
 def make_comment_net(node):
-    """extract profile of bright region in image
+    """construct network from comment object
 
     Parameters
     ----------
@@ -63,7 +63,7 @@ def make_comment_net(node):
 
 
 def get_net(url):
-    """extract profile of bright region in image
+    """construct comment network from url and get relevant info for plotting it
 
     Parameters
     ----------
